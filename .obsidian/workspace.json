@@ -1,0 +1,189 @@
+{
+  "main": {
+    "id": "2b855f5713140beb",
+    "type": "split",
+    "children": [
+      {
+        "id": "d8f6761790416736",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ae0eeb316b76438e",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "Screenshot from 2025-04-24 00-37-28.png"
+              },
+              "icon": "lucide-image",
+              "title": "Screenshot from 2025-04-24 00-37-28"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "5ee706295632fba0",
+    "type": "split",
+    "children": [
+      {
+        "id": "3871bc40863fa306",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a160cca4b7e6e237",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "dce94f0e669eb267",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "6ef094f01b69bf37",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "aab9bdf9f59dc62d",
+    "type": "split",
+    "children": [
+      {
+        "id": "cf38f58b1bfed52b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3588ccb836a99c92",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Algos.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Algos"
+            }
+          },
+          {
+            "id": "c75251845adf0dce",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Algos.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Algos"
+            }
+          },
+          {
+            "id": "861e879f43714429",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "360d7df7993474c0",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Algos.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Algos"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "ae0eeb316b76438e",
+  "lastOpenFiles": [
+    "Pasted image 20250519042408.png",
+    "Graph.md",
+    "good notes.md",
+    "DS.md",
+    "Screenshot from 2025-05-18 19-30-01.png",
+    "Pasted image 20250518184934.png",
+    "2025-05-18.md",
+    "Untitled 1",
+    "Algos.md",
+    "Untitled.canvas",
+    "Screenshot from 2025-04-24 00-37-28.png",
+    "Welcome.md",
+    "Screenshot from 2025-04-24 00-54-22.png",
+    "Algos.pdf",
+    "Graph.pdf",
+    "DS.pdf",
+    "Untitled"
+  ]
+}

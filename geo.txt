@@ -1,0 +1,60 @@
+//    #pragma GCC optimize ("O3")
+//    #pragma GCC optimize ("unroll-loops")
+//    #pragma comment(linker, "/STACK:2000000")
+#include<bits/stdc++.h>
+
+using namespace std;
+#define ll long long
+#define int long long
+#define ld long double
+#define endl "\n"
+#define FOCUS ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+void Go() {
+    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+}
+
+ld disPointLine(ld x, ld y, ld a, ld b, ld c) {
+    // x,y(point)
+    // y=ax^2+bx+c
+    // Distance = |A * x0 + B * y0 + C| / sqrt(A^2 + B^2)
+    ld dis = abs(a * x + b * y + c) / (sqrtl(a * a + b * b));
+    return dis;
+}
+
+pair<ld, ld> norm(pair<ld, ld> p) {
+    ld len = sqrtl(p.first * p.first + p.second * p.second);
+    return {p.first / len, p.second / len};
+}
+
+array<ld, 3> eq_from_point_vector(pair<ld, ld> p, pair<ld, ld> v) {
+    ld a = -v.second, b = v.first, c = v.second * p.first - v.first * p.second;
+    return {a, b, c};
+}
+
+array<ld, 3> line_bisector_between_two_lines(pair<ld, ld> p1, pair<ld, ld> p2, pair<ld, ld> p3) {
+    pair<ld, ld> v1 = {p2.first - p1.first, p2.second - p1.second}, v2 = {p3.first - p1.first, p3.second - p1.second};
+    v1 = norm(v1);
+    v2 = norm(v2);
+    pair<ld, ld> v3 = {v1.first + v2.first, v1.second + v2.second};
+    return eq_from_point_vector(p1,v3);
+}
+
+signed main() {
+//    Go();
+//    freopen("bisector.in", "r", stdin);
+//    freopen("bisector.out", "w", stdout);
+    pair<ld, ld> p1, p2, p3;
+    cin >> p1.first >> p1.second >> p2.first >> p2.second >> p3.first >> p3.second;
+    cout << fixed << setprecision(6);
+
+    for(auto it:line_bisector_between_two_lines(p1,p2,p3))
+        cout<<it<<" ";
+
+
+    return 0;
+}
