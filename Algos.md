@@ -100,8 +100,11 @@ for (int k = 0; k < n; k++) {
 struct suffixArray {  
 private:  
     string s;  
+    // pos: pos[i] = starting index of the i-th smallest suffix in 's'.
     vector<int> pos;  
+    // cost: cost[i] = rank of the suffix starting at index i among all suffixes.
     vector<int> cost;  
+    // lcp: lcp[i] = length of longest common prefix between suffixes at pos[i] and pos[i+1].
     vector<int> lcp;  
   
     int n = 0;  

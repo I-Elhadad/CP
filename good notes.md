@@ -161,3 +161,8 @@ vector<ull> LCM_Extreme(vector<int> phi, int N) {
 
 
 ![[Pasted image 20250519042408.png]]
+
+```
+int dx[]{1 , 1 , 1 , -1 , -1 , -1 , 0 , 0};  
+int dy[]{0 , 1 , -1 , -1 , 1 , 0 , 1 , -1};
+```

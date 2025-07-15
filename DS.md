@@ -192,51 +192,121 @@ struct DSU {
 };
 ```
 
+### DSU With rollbacks
+```
+struct DSU {  
+    vector<int> size, parent;  
+    vector<long long> sum;  
+  
+    struct details {  
+        int parent, child;  
+        int pSum, cSum, pSize, cSize;  
+        int componentsSize;  
+    };  
+    stack<details> operations;  
+    int components;  
+    DSU(int n) {  
+        size.resize(n + 1, 1);  
+        sum.resize(n + 1);  
+        parent.resize(n * 1 + 1);  
+        for (int i = 0; i <= n; i++) {  
+            parent[i] = i, sum[i] = i;  
+        }  
+        components = n;  
+    }  
+    int getParentWithRollback(int x) {  
+        if (x == parent[x])return x;  
+        return getParentWithRollback(parent[x]);  
+    }  
+    void connectWithRollback(ll x, ll y) {  
+        int px = getParentWithRollback(x), py = getParentWithRollback(y);  
+        if (px == py) {  
+            operations.push(  
+                {py, px, sum[py], sum[px], size[py], size[px], components}  
+            );  
+            return;  
+        }  
+        if (size[px] > size[py])swap(px, py);  
+        operations.push(  
+            {py, px, sum[py], sum[px], size[py], size[px], components}  
+        );  
+        parent[px] = py;  
+        size[py] += size[px];  
+        sum[py] += sum[px];  
+        components--;  
+    }  
+    bool connectedWithRollBack(int x, int y) {  
+        int px = getParentWithRollback(x), py = getParentWithRollback(y);  
+        return (px==py);  
+    }  
+  
+    void rollback(int steps) {  
+        while (operations.size() && steps--) {  
+            auto [p,c,psum,csum,psize,csize,comps] = operations.top();  
+            operations.pop();  
+            parent[c] = c;  
+            sum[p] = psum;  
+            sum[c] = csum;  
+            size[p] = psize;  
+            size[c] = csize;  
+            components = comps;  
+        }  
+    }  
+  
+    void clear() {  
+        while (operations.size()) {  
+            auto [p,c,psum,csum,psize,csize,comps] = operations.top();  
+            operations.pop();  
+            parent[c] = c;  
+            sum[p] = psum;  
+            sum[c] = csum;  
+            size[p] = psize;  
+            size[c] = csize;  
+            components = comps;  
+        }  
+    }  
+};
+```
 ###  Binary Lifting & LCA
 ```
+const int Log = 22;  
 struct BL {  
-// 1 based  
     vector<int> depth;  
     vector<vector<int>> edges;  
     vector<vector<int>> up;  
-    const int Log = 22;  
   
     BL(int n) {  
-        depth = vector<int>(n + 10);  
+        depth = vector<int>(n + 10, 0);  
         edges = vector<vector<int>>(n + 10);  
-        up = vector<vector<int>>(n + 10, vector<int>(Log));  
+        up = vector<vector<int>>(n + 10, vector<int>(Log, -1));  
     }  
   
-    void dfs(int node, int parent, int cnt) {  
-        depth[node] = cnt;  
-        for (auto it: edges[node]) {  
-            if (it == parent)continue;  
-            up[it][0] = node;  
-            for (int j = 1; j < Log; j++)  
-                up[it][j] = up[up[it][j - 1]][j - 1];  
-            dfs(it, node, cnt + 1);  
-        }  
-    }  
-  
-    int get_ancestor(int x, int k) {  
-        if (k > depth[x])return -1;  
-        for (int j = Log - 1; j >= 0; j--) {  
-            if (k & (1 << j)) {  
-                x = up[x][j];  
+    void dfs(int node, int parent) {  
+        up[node][0] = parent;  
+        for (int j = 1; j < Log; j++) {  
+            if (up[node][j-1] != -1) {  
+                up[node][j] = up[up[node][j-1]][j-1];  
+            } else {  
+                up[node][j] = -1;  
             }  
         }  
-        return x;  
+        for (auto it : edges[node]) {  
+            if (it == parent) continue;  
+            depth[it] = depth[node] + 1;  
+            dfs(it, node);  
+        }  
     }  
   
     int get_LCA(int a, int b) {  
-        if (depth[a] < depth[b])swap(a, b);  
+        if (depth[a] < depth[b]) swap(a, b);  
         int k = depth[a] - depth[b];  
         for (int j = Log - 1; j >= 0; j--) {  
             if (k & (1 << j)) {  
                 a = up[a][j];  
+                if (a == -1) break;  
             }  
         }  
-        if (a == b)return a;  
+        if (a == b) return a;  
         for (int j = Log - 1; j >= 0; j--) {  
             if (up[a][j] != up[b][j]) {  
                 a = up[a][j];  
@@ -343,55 +413,54 @@ struct FenwickTree {
 ```
 ### Matrix Expo
 ```
-struct Matrix
-{
-    vector<vector<int>>a;
-
-    Matrix()
-    {
-        a = vector<vector<int>>(sz, vector<int>(sz));
-    }
-
-    Matrix operator*(Matrix &other)
-    {
-        Matrix ans;
-
-        for (int i = 0; i < sz; ++i)
-        {
-            for (int j = 0; j < sz; ++j)
-            {
-                for (int k = 0; k < sz; ++k)
-                {
-                    ans.a[i][j] +=  (a[i][k] * other.a[k][j]);
-                    ans.a[i][j] %= MOD;
-                }
-            }
-        }
-        return ans;
-    }
+const int MOD = 1e9 + 7;  
+   
+ui mul(ui x, ui y) {  
+    return ((ll) (x) % MOD * (ll) (y) % MOD) % MOD;  
+}  
+   
+ui add(ui x, ui y) {  
+    return ((x) % MOD + (y) % MOD) % MOD;  
+}  
+struct Matrix {  
+    vector<vector<ui> > M;  
+  
+    static vector<vector<ui> > identity(int n, int m) {  
+        vector<vector<ui> > id(n, vector<ui>(m, 0));  
+        for (int i = 0; i < n && i < m; ++i)  
+            id[i][i] = 1;  
+        return id;  
+    }  
+  
+    static vector<vector<ui> > Mul(vector<vector<ui> > a, vector<vector<ui> > b) {  
+        int n = a.size();  
+        int m = b[0].size();  
+        int p = a[0].size(); // Must equal b.size()  
+        vector<vector<ui> > result(n, vector<ui>(m, 0));  
+        for (int i = 0; i < n; ++i)  
+            for (int j = 0; j < m; ++j)  
+                for (int k = 0; k < p; ++k)  
+                    result[i][j] = add(result[i][j], mul(a[i][k], b[k][j]));  
+  
+        return result;  
+    }  
+  
+    static vector<vector<ui> > Power(vector<vector<ui> > a, int b) {  
+        if (b == 0) return identity(a.size(), a[0].size());  
+        auto ans = Power(a, b / 2);  
+        ans = Mul(ans, ans);  
+        if (b & 1)  
+            return Mul(a, ans);  
+        return ans;  
+    }  
+  
+  
+    vector<vector<ui> > MatrixExpo(vector<vector<ui> > matrix, vector<vector<ui> > a, int p) {  
+        M = matrix;  
+        M = Power(M, p);  
+        return Mul(M, a);  
+    }  
 };
-
-Matrix power(Matrix x, unsigned int y)
-{
-    Matrix res;
-
-
-    for (int i = 0; i < sz; ++i)
-    {
-        res.a[i][i] = 1;
-    }
-
-
-
-    while (y > 0)
-    {
-        if (y & 1)
-            res = (res * x);
-        y = y >> 1;
-        x = (x * x);
-    }
-    return res;
-}
 
 ```
 ###  LIS log(n)
