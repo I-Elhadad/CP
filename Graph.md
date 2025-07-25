@@ -1,3 +1,4 @@
+
 ### SCC
 ```
 struct SCC {  
@@ -135,3 +136,135 @@ struct SAT {
 ```
 
 ![[Screenshot from 2025-04-24 00-54-22.png]]
+
+
+
+### solving_for_diffrent_constrains 
+```
+vector<int>solving_for_diffrent_constrains(int n,vector<array<int,3>>constrains)
+{
+// general rules
+/*
+a=b
+a   ----> b
+*/
+    vector<array<int,3>>edges;// first add ralations
+    for (auto [x1,x2,c]: constrains) {
+        //   x2-x1==c    ----><
+        // x2-x1>=c    ------> x1->x2 with c
+        // -x2+x1>=-c   ---->   x1-x2>=-c    x2->x1  with -c
+
+        edges.push_back({x1, x2, c});
+        edges.push_back({x2, x1, -c});
+    }
+
+    for (int i = 1; i <= n; i++) {
+        edges.push_back({i - 1, i, 1});
+    }
+    // base value is zero
+    second put base value and loop on number of nodes
+    vector<int> dis(n + 1, 0);
+    bool cyc=false;
+    for (int i = 0; i <= n; i++) {
+        for (auto [x,y,c]: edges) {
+            if (dis[y] < dis[x] + c) {
+                dis[y] = dis[x] + c;
+                if (i==n)cyc=true;
+            }
+        }
+    }
+
+}
+```
+
+| Relation | Difference Form              | Graph Edge                                           |
+| -------- | ---------------------------- | ---------------------------------------------------- |
+| `x ≤ y`  | `x - y ≤ 0`                  | Edge: `y → x` with weight `0`                        |
+| `x < y`  | `x - y ≤ -1`                 | Edge: `y → x` with weight `-1`                       |
+| `x ≥ y`  | `y - x ≤ 0`                  | Edge: `x → y` with weight `0`                        |
+| `x > y`  | `y - x ≤ -1`                 | Edge: `x → y` with weight `-1`                       |
+| `x = y`  | both `x ≤ y` and `y ≤ x`     | Edges: `y → x` and `x → y`, weight `0` each          |
+| `x ≠ y`* | `x - y ≤ -1` or `y - x ≤ -1` | One of the edges `y → x` or `x → y` with weight `-1` |
+
+_\*Note:_ For `≠`, you must choose either `x < y` or `y < x` to violate equality._
+
+### belman Get all nodes affected by negative cycle and detect cycle
+
+```
+int n, m, q, s;  
+cin >> n >> m >> q >> s;  
+vector<array<ll, 3> > edges(m);  
+for (int i = 0; i < m; i++) {  
+    cin >> edges[i][0] >> edges[i][1] >> edges[i][2];  
+}  
+vector<ll> dis(n, 1e18);  
+dis[s] = 0;  
+ll INF = 1e18;  
+bool isCycle=0;  
+for (int i = 0; i < n; i++) {  
+    for (auto [x,y,c]: edges) {  
+        if (dis[x] != INF && dis[y] > dis[x] + c) {  
+            dis[y] = dis[x] + c;  
+            if (i==n-1)isCycle=true;  
+        }  
+    }  
+}  
+for (int i = 0; i < n; i++) {  
+    for (auto [x,y,c]: edges) {  
+        if (dis[x] != INF && dis[y] > dis[x] + c) {  
+            dis[y] = -INF;  
+        }  
+    }  
+}  
+while (q--) {  
+    int end;  
+    cin >> end;  
+    if (dis[end] == -1e18) {  
+        cout << "-Infinity" << endl;  
+    } else if (dis[end] == 1e18) {  
+        cout << "Impossible" << endl;  
+    } else  
+        cout << dis[end] << endl;  
+}
+```
+
+### Detect negative cycle using belman
+```
+cin >> n >> m;
+    vector<array<ll, 3> > edges(m);
+    for (int i = 0; i < m; i++) {
+        cin >> edges[i][0] >> edges[i][1] >> edges[i][2], edges[i][0]--, edges[i][1]--;
+    }
+    vector<int> dis(n, 0);
+    ll INF = 1e18;
+    int cyc = -1;
+    vector<int> parent(n,-1);
+    for (int i = 0; i < n; i++) {
+        for (auto [x,y,c]: edges) {
+            if ( dis[y] > dis[x] + c) {
+                dis[y] = dis[x] + c;
+                parent[y] = x;
+                if (i == n - 1)cyc = y;
+            }
+        }
+    }
+    if (cyc==-1) {
+        cout << "NO" << endl;
+    } else {
+        cout<<"YES"<<endl;
+        for (int i=0;i<n;i++)cyc=parent[cyc];
+        vector<int>v={cyc};
+        int st=cyc;
+        while (parent[st]!=cyc) {
+            st=parent[st];
+            v.push_back(st);
+        }
+        v.push_back(cyc);
+        reverse(v.begin(),v.end());
+        for (auto it:v)
+            cout<<it+1<<" ";
+        cout<<endl;
+
+
+    }
+```

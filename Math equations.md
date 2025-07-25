@@ -35,3 +35,18 @@
 - `l` (in cone) = الارتفاع الجانبي (المائل)  
 - `bh` = القاعدة × الارتفاع في المثلث  
 - `slant_height` = الارتفاع الجانبي للهرم  
+
+
+
+### area of triangle using 3 sides
+```
+s=(a+b+c)/2
+area=sqrt(s*(s-a)*(s-b)*(s-c));
+```
+
+### angle c in triangle  in degrees
+```
+ld angle=(acos((a*a+b*b-c*c)/(2*a*b)))*180/PI;
+```
+
+
